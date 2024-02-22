@@ -1,0 +1,59 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Raleway"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <title>Driver License Upload Page</title>
+    <style>
+      body {
+    background-color: #f6f6f6;
+  }
+  </style>
+	</head>
+<body>
+
+	<div th:if="${message}">
+		<h2 th:text="${message}"/>
+	</div>
+
+
+	
+
+	<section class="my-5">
+	    <div class="container">
+			
+	        <div class="col-md-8 mx-auto">
+				
+	            <div class="col-md-8 mx-auto">
+	                <h1>Please Upload A Photocopy Of Your Driver License: </h1>
+	                <p th:text="${msg}" th:if="${msg ne null}" class="alert alert-primary"></p>
+	                <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
+						<div class="form-group">
+						    <label>User Name:</label>
+						    <input type="text" name="userName" id="userName" class="form-control" />
+						</div>
+					    <div class="form-group">
+						    <label>User Email:</label>
+						    <input type="email" name="userEmail" id="userEmail" class="form-control"/>
+						</div>
+	                    <div class="form-group">
+	                        <input type="file" name="file" accept="image/*" class="form-control-file">
+	                    </div>
+	                    <button type="submit" class="btn btn-primary">Upload Driver License</button>
+	                </form>
+	     
+	            </div>
+	        </div>
+	    </div>
+	</section>
+
+</body>
+</html>

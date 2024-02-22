@@ -25,6 +25,7 @@ public class InsurancePlansController {
 			mAndView.addObject("principal",principal.getName());
 			mAndView.addObject("username", user.getUserName());
 			mAndView.addObject("useremail", user.getUserEmail());
+			mAndView.addObject("usermobile", user.getUserMobile());
 			return mAndView;
 		} else {
 			mAndView.addObject("user",null);
@@ -42,6 +43,7 @@ public class InsurancePlansController {
 			mAndView.addObject("principal",principal.getName());
 			mAndView.addObject("username", user.getUserName());
 			mAndView.addObject("useremail", user.getUserEmail());
+			mAndView.addObject("usermobile", user.getUserMobile());
 			return mAndView;
 		} else {
 			mAndView.addObject("user",null);
@@ -60,6 +62,8 @@ public class InsurancePlansController {
 			mAndView.addObject("principal",principal.getName());
 			mAndView.addObject("username", user.getUserName());
 			mAndView.addObject("useremail", user.getUserEmail());
+			mAndView.addObject("usermobile", user.getUserMobile());
+
 			return mAndView;
 		} else {
 			mAndView.addObject("user",null);
@@ -68,10 +72,9 @@ public class InsurancePlansController {
 
 	}
 	
-	@GetMapping("planPayment")
-	public ModelAndView planPayment(Principal principal){
-		ModelAndView mAndView = new ModelAndView("planPayment");
+	@GetMapping("vehicleRegistration")
+	public ModelAndView vehicleRegistration(Principal principal){
+		ModelAndView mAndView = new ModelAndView("vehicleRegistration");
 		return mAndView;
 	}
-
 }

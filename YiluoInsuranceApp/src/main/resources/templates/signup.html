@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+  />
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  
+   
+  <head>
+    <meta charset="UTF-8" />
+    <title>User Signup Page</title>
+    <style>
+      body {
+    background-color: #f6f6f6;
+  }
+  </style>
+  </head>
+  <body style="height: 100vh" class="w-200">
+    
+    <div class="mt-5 d-flex justify-content-center">
+      <form th:action="@{/userSignUp}" th:object="${user}" method="post" id="signUpForm">
+		 
+        <div class="form-group">
+          <h1 align="center">User Sign-up</h1>
+        </div>
+
+        <div class="form-group">
+          <label> Enter Username: </label>
+          <input
+          	type="text"
+          	th:field="*{userName}"
+            required class="form-control"
+            placeholder="Enter Username"
+            id="customerName"
+          />
+        </div>
+
+        <div class="form-group">
+          <label> Enter Password: </label>
+          <input
+          	type="password"
+            required class="form-control"
+            placeholder="Enter Password"
+            id="customerPassword"
+            th:field="*{userPassword}"
+          />
+        </div>
+        
+         <div class="form-group">
+          <label> Select Date of Birth: </label>
+          <input
+          	type="date"
+            required class="form-control"
+            id="customerDOB"
+            th:field="*{userDOB}"
+          />
+        </div>
+        
+        <div class="form-group">
+          <label> Select Your Gender: </label>
+          <select
+            required class="form-control"
+            id="customerGender"
+            th:field="*{userGender}"
+          >
+          <option value="MALE">Male</option>
+          <option value="FEMALE">Female</option>
+          <option value="OTHER">Other</option>
+          </select>
+        </div>
+
+
+         <div class="form-group">
+          <label> Enter Mobile No: </label>
+          <input
+          	type="tel"
+            required class="form-control"
+            placeholder="Enter Mobile No"
+            id="customerMobile"
+            th:field="*{userMobile}"
+          />
+        </div>
+        
+        <div class="form-group">
+          <label> Enter Email: </label>
+          <input
+          	type="email"
+            required class="form-control"
+            placeholder="Enter Email"
+            id="customerEmail"
+            th:field="*{userEmail}"
+          />
+        </div>
+		
+        <button class="btn btn-primary mt-5" type="submit" id="UserSignUpBtn">Sign Up</button>
+      </form>
+    </div>
+    
+    
+  </body>
+</html>

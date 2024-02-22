@@ -22,4 +22,17 @@ public class UserClient {
             return errorMessage;
         }		
 	}
+
+	public String addVehicle(JsonNode vehicle) {
+		RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<JsonNode> requestEntity = new HttpEntity<>(vehicle);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8383" + "/addVehicle", requestEntity, String.class);
+        if (responseEntity.getStatusCode() == HttpStatus.OK || responseEntity.getStatusCode() == HttpStatus.CREATED) {
+            String responseBody = responseEntity.getBody();
+            return responseBody;
+        } else {
+            String errorMessage = "Error: Received HTTP status " + responseEntity.getStatusCodeValue();
+            return errorMessage;
+        }		
+	}
 }

@@ -3,23 +3,34 @@ $(document).ready(function () {
   var standardplanclicked = false;
   var premiumplanclicked = false;
   var supremeplanclicked = false;
-
+  var standardPlan = new Object()
+	
   // Get a reference to the button
   $("#StandardPlanChoosePlanBtn").click(function () {
     standardplanclicked = true;
-    window.location = "/standardPlan";
+    localStorage.setItem('standardplanclicked', standardplanclicked);  
+    localStorage.removeItem('premiumplanclicked');
+    localStorage.removeItem('supremeplanclicked'); 
+    window.location = "/vehicleRegistration";
   });
   
   // Get a reference to the button
   $("#PremiumPlanChoosePlanBtn").click(function () {
     premiumplanclicked = true;
-    window.location = "/premiumPlan";
+    localStorage.removeItem('standardplanclicked');  
+    localStorage.setItem('premiumplanclicked', premiumplanclicked);
+    localStorage.removeItem('supremeplanclicked');
+
+    window.location = "/vehicleRegistration";
   });
   
   // Get a reference to the button
   $("#SupremePlanChoosePlanBtn").click(function () {
     supremeplanclicked = true;
-    window.location = "/supremePlan";
+    localStorage.removeItem('standardplanclicked');  
+    localStorage.removeItem('premiumplanclicked');
+    localStorage.setItem('supremeplanclicked', supremeplanclicked);
+    window.location = "/vehicleRegistration";
   });
 	
 		
@@ -71,20 +82,19 @@ $(document).ready(function () {
   /* this part is for individual plan */
   
   
-   $("#StandardPlanUserSignUp").click(function () {
-	   location.href = "/signup";
+   $("#standardPlanUserSignInBtn").click(function () {
+	   window.location = "/signin"
    })
    
-   $("#PremiumPlanUserSignUp").click(function () {
-	   window.location = "/signup";
+   $("#premiumPlanUserSignInBtn").click(function () {
+	   window.location = "/signin";
    })
    
-   $("#SupremePlanUserSignUp").click(function () {
-	   window.location = "/signup";
+   $("#supremePlanUserSignInBtn").click(function () {
+	   window.location = "/signin";
    })
    
   $("#StandardPlanPurchaseConfirmBtn").click(function () {
-	var standardPlan = new Object()
 	standardPlan.startDate = $("#insurancePlanStartDate").val();
 	standardPlan.endDate = $("#insurancePlanEndDate").val();
 	standardPlan.deductables = 99
@@ -103,23 +113,19 @@ $(document).ready(function () {
 	
 	standardPlan.duration = monthDiff(standardPlan.startDate, standardPlan.endDate)
 	standardPlan.finalCharges = standardPlan.duration * standardPlan.price - standardPlan.deductables
-	//console.log(standardPlan)
 	
-	/* add the new insurance plan info */
-    $.ajax({
-      url: "http://localhost:8282/addPlan",
-      type: "POST",
-      data: JSON.stringify(standardPlan),
-      dataType: "json",
-      contentType: "application/json",
-      success: function () {
-        alert("You have submitted your information .");
-        location.href = "/planPayment"
-      },
-      error: function () {
-        alert("Something went wrong.");
-      },
-    });
+	localStorage.setItem("insuranceStartDate", standardPlan.startDate);
+	localStorage.setItem("insuranceEndDate", standardPlan.endDate);
+	localStorage.setItem("insuranceDeductables", standardPlan.deductables);
+	localStorage.setItem("insurancePlanType", standardPlan.insuranceType);
+	localStorage.setItem("insuranceDuration", standardPlan.duration);
+	localStorage.setItem("insuranceFinalCharges", standardPlan.finalCharges);
+	localStorage.setItem("insurancePoductName", 
+			"Autoinsurance" + " " + 
+			standardPlan.insuranceType + "  Plan, " + standardPlan.duration + " month(s).");
+	
+	window.location = "/payment"
+	
   });
   
   
@@ -143,23 +149,18 @@ $(document).ready(function () {
 	
 	premiumPlan.duration = monthDiff(premiumPlan.startDate, premiumPlan.endDate)
 	premiumPlan.finalCharges = premiumPlan.duration * premiumPlan.price - premiumPlan.deductables
-	//console.log(standardPlan)
 	
-	/* add the new insurance plan info */
-    $.ajax({
-      url: "http://localhost:8282/addPlan",
-      type: "POST",
-      data: JSON.stringify(premiumPlan),
-      dataType: "json",
-      contentType: "application/json",
-      success: function () {
-        alert("You have submitted your information .");
-        location.href = "/planPayment"
-      },
-      error: function () {
-        alert("Something went wrong.");
-      },
-    });
+	localStorage.setItem("insuranceStartDate", premiumPlan.startDate);
+	localStorage.setItem("insuranceEndDate", premiumPlan.endDate);
+	localStorage.setItem("insuranceDeductables", premiumPlan.deductables);
+	localStorage.setItem("insurancePlanType", premiumPlan.insuranceType);
+	localStorage.setItem("insuranceDuration", premiumPlan.duration);
+	localStorage.setItem("insuranceFinalCharges", premiumPlan.finalCharges);
+	localStorage.setItem("insurancePoductName", 
+			"Autoinsurance" + " " + 
+			premiumPlan.insuranceType + "  Plan, " + premiumPlan.duration + " month(s).");
+	
+	window.location = "/payment"
   });
   
   
@@ -183,23 +184,18 @@ $(document).ready(function () {
 	
 	supremePlan.duration = monthDiff(supremePlan.startDate, supremePlan.endDate)
 	supremePlan.finalCharges = supremePlan.duration * supremePlan.price - supremePlan.deductables
-	//console.log(supremePlan)
 	
-	/* add the new insurance plan info */
-  	$.ajax({
-      url: "http://localhost:8282/addPlan",
-      type: "POST",
-      data: JSON.stringify(supremePlan),
-      dataType: "json",
-      contentType: "application/json",
-      success: function () {
-        alert("You have submitted your information .");
-        location.href = "/planPayment"
-      },
-      error: function () {
-        alert("Something went wrong.");
-      },
-    });
+	localStorage.setItem("insuranceStartDate", supremePlan.startDate);
+	localStorage.setItem("insuranceEndDate", supremePlan.endDate);
+	localStorage.setItem("insuranceDeductables", supremePlan.deductables);
+	localStorage.setItem("insurancePlanType", supremePlan.insuranceType);
+	localStorage.setItem("insuranceDuration", supremePlan.duration);
+	localStorage.setItem("insuranceFinalCharges", supremePlan.finalCharges);
+	localStorage.setItem("insurancePoductName", 
+			"Autoinsurance" + " " + 
+			supremePlan.insuranceType + "  Plan, " + supremePlan.duration + " month(s).");
+	
+	window.location = "/payment"
   });
   
 });

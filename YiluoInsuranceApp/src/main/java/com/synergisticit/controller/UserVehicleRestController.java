@@ -9,12 +9,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.synergisticit.client.UserClient;
 
 @RestController
-public class UserRestController {
+public class UserVehicleRestController {
 
 	@Autowired UserClient userClient;
-	
-	@PostMapping("addUser")
-	public String addUser(@RequestBody JsonNode user) {
-		return userClient.addUser(user);
+		
+	@PostMapping("addVehicle")
+	public String addVehicle(@RequestBody JsonNode vehicle) {
+		return userClient.addVehicle(vehicle);
 	}
 }

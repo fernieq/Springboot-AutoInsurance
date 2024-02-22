@@ -3,6 +3,7 @@ package com.synergisticit.domain;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Insurance {
@@ -17,16 +19,21 @@ public class Insurance {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long insuranceId;
+	@NotNull
 	private LocalDate startDate;
+	@NotNull
 	private LocalDate endDate;
+	@NotNull
 	private Long deductables;
-	private InsuranceType insuranceType;
+	@NotNull
+	private String insuranceType;
+	@NotNull
 	private Long price;
 	private Long duration;
 	@OneToMany
 	private List<Rider> riders;
 	private Long finalCharges;
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "policyId")
 	private Policy policy;
 	public Long getInsuranceId() {
@@ -53,10 +60,10 @@ public class Insurance {
 	public void setDeductables(Long deductables) {
 		this.deductables = deductables;
 	}
-	public InsuranceType getInsuranceType() {
+	public String getInsuranceType() {
 		return insuranceType;
 	}
-	public void setInsuranceType(InsuranceType insuranceType) {
+	public void setInsuranceType(String insuranceType) {
 		this.insuranceType = insuranceType;
 	}
 	public Long getPrice() {
@@ -94,20 +101,16 @@ public class Insurance {
 		
 	}
 	
-	public Insurance(Long insuranceId, LocalDate startDate, LocalDate endDate, Long deductables,
-			InsuranceType insuranceType, Long price, Long duration, List<Rider> riders,
-			Long finalCharges, Policy policy) {
+	public Insurance(LocalDate startDate, LocalDate endDate, Long deductables,
+			String insuranceType, Long price, Long duration, Long finalCharges) {
 		super();
-		this.insuranceId = insuranceId;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.deductables = deductables;
 		this.insuranceType = insuranceType;
 		this.price = price;
 		this.duration = duration;
-		this.riders = riders;
 		this.finalCharges = finalCharges;
-		this.policy = policy;
 	}
 	
 	

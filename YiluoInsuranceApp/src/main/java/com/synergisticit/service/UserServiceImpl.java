@@ -15,8 +15,8 @@ import com.synergisticit.repository.UserRepository;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	UserRepository userRepository;
+	@Autowired UserRepository userRepository;
+	@Autowired BCryptPasswordEncoder bCrypt;
 	
 	@Override
 	public List<User> findAll() {
@@ -24,12 +24,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User save(User u) {
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String hashedPassword = passwordEncoder.encode(u.getUserPassword());
-		u.setUserPassword(hashedPassword);
-		User user = userRepository.save(u);
-		return user;
+	public User save(User user) {
+		String hashedPassword = bCrypt.encode(user.getUserPassword());
+		user.setUserPassword(hashedPassword);
+		return userRepository.save(user);
 	}
 
 	@Override

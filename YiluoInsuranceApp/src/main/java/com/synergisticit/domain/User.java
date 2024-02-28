@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,8 +29,11 @@ public class User {
 	private String userEmail;
 	private String userMobile;
 	private Gender userGender;
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany
 	private List<Policy> userPolicies;
+	@OneToMany
+	private List<Document> userDocuments;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name="user_role")
 	private Set<Role> roles = new HashSet<>();
@@ -78,6 +80,12 @@ public class User {
 	public void setUserGender(Gender userGender) {
 		this.userGender = userGender;
 	}
+	public List<Document> getUserDocuments() {
+		return userDocuments;
+	}
+	public void setUserDocuments(List<Document> userDocuments) {
+		this.userDocuments = userDocuments;
+	}
 	public List<Policy> getUserPolicies() {
 		return userPolicies;
 	}
@@ -91,19 +99,20 @@ public class User {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-	public User(String userName, String userPassword, LocalDate userDOB,
+	public User(String userName, String userPassword, LocalDate userDOB, List<Document> userDocuments,
 			String userEmail, String userMobile, Gender userGender, List<Policy> userPolicies) {
 		super();
 		this.userName = userName;
 		this.userPassword = userPassword;
 		this.userDOB = userDOB;
+		this.userDocuments = userDocuments;
 		this.userEmail = userEmail;
 		this.userMobile = userMobile;
 		this.userGender = userGender;
 		this.userPolicies = userPolicies;
 	}
 	public User() {
-		
+		super();
 	}
 	
 }

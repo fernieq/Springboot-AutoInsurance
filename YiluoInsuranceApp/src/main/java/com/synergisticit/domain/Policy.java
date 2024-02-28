@@ -18,7 +18,7 @@ public class Policy {
 	private String policyName;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Insurance insurance;
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	private User user;
 	public Long getPolicyId() {
 		return policyId;

@@ -124,5 +124,108 @@ public class InvoiceService {
 		java.util.Date todayDate = new java.util.Date();
 		return todayDate.toString();
 	}
+
+	public byte[] generateInvoice(Policy policy) {
+		System.out.println(policy.getUser());
+		Document document = new Document();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		try {
+			PdfWriter.getInstance(document, outputStream);
+			document.open();
+			writeContent(document, policy);
+			document.close();
+			System.out.println("PDF invoice written!!!!");
+			return outputStream.toByteArray();
+		} catch (DocumentException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				outputStream.close();
+			} catch ( IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return null;
+	}
+
+	private void writeContent(Document document, Policy policy) throws DocumentException {
+		Font headerFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+		Font regularFont = new Font(Font.FontFamily.TIMES_ROMAN, 14);
+		
+		//header
+		Paragraph headerParagraph = new Paragraph("Invoice", headerFont);
+		headerParagraph.setAlignment(Element.ALIGN_CENTER);
+		document.add(headerParagraph);
+		
+		//body
+		document.add(new Paragraph("\n"));
+		
+		PdfPTable table = new PdfPTable(2);
+		table.setWidthPercentage(100);
+		table.setWidths(new float[] {1,2});
+		
+		PdfPCell pCell;
+		
+		pCell = new PdfPCell(new Phrase("Insurance Policy Number: ", regularFont));
+		table.addCell(pCell);
+		pCell = new PdfPCell(new Phrase(String.valueOf("#" + policy.getPolicyId()), regularFont));
+		table.addCell(pCell);
+		
+		pCell = new PdfPCell(new Phrase("Payment Date: ", regularFont));
+		table.addCell(pCell);
+		pCell = new PdfPCell(new Phrase(getCurrentDate(), regularFont));
+		table.addCell(pCell);
+		
+		pCell = new PdfPCell(new Phrase("Customer Name: ", regularFont));
+		table.addCell(pCell);
+		pCell = new PdfPCell(new Phrase(String.valueOf(policy.getUser().getUserName()), regularFont));
+		table.addCell(pCell);
+		
+		pCell = new PdfPCell(new Phrase("Customer Email: ", regularFont));
+		table.addCell(pCell);
+		pCell = new PdfPCell(new Phrase(String.valueOf(policy.getUser().getUserEmail()), regularFont));
+		table.addCell(pCell);
+						
+		pCell = new PdfPCell(new Phrase("Insurance Details: ", regularFont));
+		table.addCell(pCell);
+		pCell = new PdfPCell(new Phrase(String.valueOf(policy.getPolicyName()), regularFont));
+		table.addCell(pCell);
+		
+		pCell = new PdfPCell(new Phrase("Insurance Type: ", regularFont));
+		table.addCell(pCell);
+		pCell = new PdfPCell(new Phrase(String.valueOf(policy.getInsurance().getInsuranceType()), regularFont));
+		table.addCell(pCell);
+		
+		pCell = new PdfPCell(new Phrase("Insurance Start Date: ", regularFont));
+		table.addCell(pCell);
+		pCell = new PdfPCell(new Phrase(String.valueOf(policy.getInsurance().getStartDate()), regularFont));
+		table.addCell(pCell);
+		
+		pCell = new PdfPCell(new Phrase("Insurance End Date: ", regularFont));
+		table.addCell(pCell);
+		pCell = new PdfPCell(new Phrase(String.valueOf(policy.getInsurance().getEndDate()), regularFont));
+		table.addCell(pCell);
+		
+		pCell = new PdfPCell(new Phrase("Insurance Total Duration", regularFont));
+		table.addCell(pCell);
+		pCell = new PdfPCell(new Phrase(String.valueOf(policy.getInsurance().getDuration() + " month(s)"), regularFont));
+		table.addCell(pCell);
+		
+		pCell = new PdfPCell(new Phrase("Insurance Deductables: ", regularFont));
+		table.addCell(pCell);
+		pCell = new PdfPCell(new Phrase(String.valueOf("$" + policy.getInsurance().getDeductables()) , regularFont));
+		table.addCell(pCell);
+		
+		document.add(table);
+		
+		//end
+		document.add(new Paragraph("\n"));
+		Paragraph totalSavings = new Paragraph("Final Charges: $" + policy.getInsurance().getFinalCharges() + "USD", headerFont);
+		totalSavings.setAlignment(Element.ALIGN_RIGHT);
+		document.add(totalSavings);
+		
+		
+	}
 	
 }

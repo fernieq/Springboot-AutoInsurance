@@ -60,7 +60,7 @@ public class EmailService {
 				<!DOCTYPE html>
 				<html>
 				<head>
-					<title>Hotel Confirmation</title>
+					<title>Autoinsurance Purchase Confirmation</title>
 				</head>
 				<body>
 				
@@ -72,7 +72,7 @@ public class EmailService {
 					<p>Insurance End Date: %s</p>
 					<p>Insurance Type: %s</p>
 					<p>Insurance Final Price: $ %s USD</p>
-					<p>Status: Succeeded</p>
+					<p>Status: Pending Approval</p>
 					<hr/>
 					<h3>Attention:</h3>
 					<h4>Please use this <a href="http://localhost:8282/upload">link</a> to upload all the required documents for the next step.</h4>
@@ -86,6 +86,73 @@ public class EmailService {
 						request.getEndDate(),
 						request.getType(),
 						request.getAmount()
+						);
+		
+		return htmlTemplate;
+	}
+
+
+	public void sendBookingConfirmationEmail(Policy policy) {
+		try {
+			MimeMessage message = javaMailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message);
+			
+			byte[] invoiceByte = invoiceService.generateInvoice(policy);
+			MimeBodyPart part = new MimeBodyPart();
+			part.setContent(invoiceByte, "application/pdf");
+			part.setFileName("AutoInsuranceInvoice.pdf");
+			
+			MimeBodyPart textPart = new MimeBodyPart();
+			textPart.setContent(this.getEmailBody(policy), "text/html;charset=UTF-8"); //set content type to HTML
+			
+			helper.setTo(policy.getUser().getUserEmail());
+			helper.setSubject("Attention! Your Autoinsurance Plan Status Has Been Updated.");
+			
+			Multipart multipart = new MimeMultipart();
+			multipart.addBodyPart(part);
+			multipart.addBodyPart(textPart);
+			
+			message.setContent(multipart);
+			javaMailSender.send(message);
+		} catch (Exception e) {
+			System.err.println("Email sending exception: " + e.getMessage());
+		}
+		
+	}
+
+
+	private Object getEmailBody(Policy policy) {
+		StringBuilder guestTable = new StringBuilder();
+		
+		String htmlTemplate = """
+				<!DOCTYPE html>
+				<html>
+				<head>
+					<title>Autoinsurance Plan Status Update</title>
+				</head>
+				<body>
+				
+				<div class="container">
+					<h1>The Status of Your Payment for %s Has Been Updated!</h1>
+					<h3>Your Payment Invoice is also attached below. Please check it out.</h3>
+					<p>Insurance Policy ID: # %s</p>
+					<p>Insurance Start Date: %s</p>
+					<p>Insurance End Date: %s</p>
+					<p>Insurance Type: %s</p>
+					<p>Insurance Final Price: $ %s USD</p>
+					<p>Status: %s</p>
+					<hr/>
+				</div>
+				</body>
+				</html>
+				""".formatted(
+						policy.getPolicyName(),
+						policy.getPolicyId(),
+						policy.getInsurance().getStartDate(),
+						policy.getInsurance().getEndDate(),
+						policy.getInsurance().getInsuranceType(),
+						policy.getInsurance().getFinalCharges(),
+						policy.getPolicyStatus()
 						);
 		
 		return htmlTemplate;

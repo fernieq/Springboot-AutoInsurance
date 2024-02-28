@@ -1,40 +1,55 @@
 package com.synergisticit.domain;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Document {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long documetnId;
+	private Long documentId;
 	
 	@Lob
     private byte[] driverLicense;
 	
 	private String fileType;
-
+	private String downloadURL;
+	private Long byteSize;
     private String fileName;
-        
-    public Document() {
-    }
+    @ManyToOne
+	private User user;    
+
+    public  Document () {
+    	super();
+	}
 
     
-	public Document(String fileName,  String fileType, byte[] driverLicense) {
+	public Document(String fileName, String fileType, byte[] driverLicense, Long byteSize, String downloadURL, User user) {
+		super();
+		this.driverLicense = driverLicense;
+		this.fileType = fileType;
+		this.byteSize = byteSize;
+		this.downloadURL = downloadURL;
+		this.fileName = fileName;
+		this.user = user;
+	}
+
+
+	public Document(String fileName, String fileType, byte[] driverLicense) {
 		super();
 		this.driverLicense = driverLicense;
 		this.fileType = fileType;
 		this.fileName = fileName;
 	}
 
-
 	// Getters and Setters
+
+	
 
 	public String getFileType() {
 		return fileType;
@@ -46,15 +61,46 @@ public class Document {
 	}
 
 
-	public Long getDocumetnId() {
-        return documetnId;
-    }
+	
+    public Long getByteSize() {
+		return byteSize;
+	}
 
-    public void setDocumetnId(Long documetnId) {
-        this.documetnId = documetnId;
-    }
 
-    public byte[] getDriverLicense() {
+	public void setByteSize(Long byteSize) {
+		this.byteSize = byteSize;
+	}
+
+
+	public String getDownloadURL() {
+		return downloadURL;
+	}
+
+	public void setDownloadURL(String downloadURL) {
+		this.downloadURL = downloadURL;
+	}
+
+	public Long getDocumentId() {
+		return documentId;
+	}
+
+
+	public void setDocumentId(Long documentId) {
+		this.documentId = documentId;
+	}
+
+
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
+	public byte[] getDriverLicense() {
         return driverLicense;
     }
 

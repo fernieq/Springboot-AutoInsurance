@@ -31,11 +31,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
 			System.out.println("Retrived user from database: " + user.getUserName());
 
 			Set<GrantedAuthority> ga = new HashSet<>();
+			
 			for (Role role : user.getRoles()) {
 				System.out.println("role.getRoleName()" + role.getRoleName());
 				ga.add(new SimpleGrantedAuthority(role.getRoleName()));
 			}
-
+			//add default USER role
+			ga.add(new SimpleGrantedAuthority("USER"));
 			return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getUserPassword(), ga);
 
 		}

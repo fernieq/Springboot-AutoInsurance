@@ -24,18 +24,20 @@ public class SecurityConfig {
 		.apply(MyCustomDsl.customDsl())
 		.flag(true).and()
 		.authorizeRequests()
-			.requestMatchers("/", "/home").permitAll().and()
-		      .exceptionHandling().accessDeniedPage("/accessDenied").and()
+		.requestMatchers("/", "/home").permitAll().and()
+	    .exceptionHandling().accessDeniedPage("/accessDenied").and()
 		.authorizeRequests()
-			.requestMatchers("/autoInsurancePlan", "/standardPlan", "/premiumPlan","/supremePlan","/vehicleRegistration", "/payment").hasAnyAuthority("USER").and()
-	.formLogin()
-		.loginPage("/signin")
-		.defaultSuccessUrl("/home").permitAll().and()
-	.logout()
-	.logoutSuccessUrl("/signin")
-    .invalidateHttpSession(true)
-    .deleteCookies("JSESSIONID")
-    .permitAll();
+		.requestMatchers("/adminControl", "/viewDocuments").hasAnyAuthority("ADMIN").and()
+		.authorizeRequests()
+	    .requestMatchers("/autoInsurancePlan", "/standardPlan", "/premiumPlan","/supremePlan","/vehicleRegistration", "/payment", "/chatGPT").hasAnyAuthority("USER", "ADMIN").and()
+	    .formLogin()
+	    .loginPage("/signin")
+	    .defaultSuccessUrl("/home").permitAll().and()
+	    .logout()
+	    .logoutSuccessUrl("/signin")
+	    .invalidateHttpSession(true)
+	    .deleteCookies("JSESSIONID")
+	    .permitAll();
 	
 	http.userDetailsService(userDetailsService);
 	  
